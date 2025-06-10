@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaseous Solutions - LP Gas Delivery & Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-image {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            color: #dc2626;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo-subtext {
+            color: #f97316;
+            font-size: 18px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #dc2626;
+        }
+
+        /* Main Content */
+        main {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 20px auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            padding: 40px;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            color: #dc2626;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        /* Home Section */
+        .hero {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(249, 115, 22, 0.1));
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #dc2626;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #dc2626, #f97316);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Order Form */
+        .order-form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #dc2626;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .gas-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .gas-option {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gas-option:hover, .gas-option.selected {
+            border-color: #dc2626;
+            background: rgba(220, 38, 38, 0.05);
+        }
+
+        .gas-option h3 {
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f97316;
+        }
+
+        /* Payment Section */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .payment-option {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option:hover, .payment-option.selected {
+            border-color: #dc2626;
+            background: rgba(220, 38, 38, 0.05);
+        }
+
+        /* Invoice */
+        .invoice {
+            background: white;
+            border: 2px solid #dc2626;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #f97316;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .total {
+            background: #dc2626;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Chatbot */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+        }
+
+        .chatbot.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(45deg, #dc2626, #f97316);
+            color: white;
+            padding: 15px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            background: #f3f4f6;
+            color: #333;
+        }
+
+        .user-message {
+            background: #dc2626;
+            color: white;
+            margin-left: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            border-radius: 20px;
+            background: #f3f4f6;
+        }
+
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #dc2626, #f97316);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .gas-options, .payment-methods {
+                grid-template-columns: 1fr;
+            }
+            
+            .chatbot {
+                width: 280px;
+                height: 350px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="static/images/logo.png" alt="Logo" class="logo-image">
+                    <div>
+                        <div class="logo-text">GASEOUS</div>
+                        <div class="logo-subtext">SOLUTIONS</div>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a onclick="showSection('home')">Home</a></li>
+                        <li><a onclick="showSection('order')">Order Gas</a></li>
+                        <li><a onclick="showSection('about')">About</a></li>
+                        <li><a onclick="showSection('contact')">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1>Premium LP Gas Solutions</h1>
+                <p>Reliable gas delivery and collection services at your convenience</p>
+                <button class="cta-button" onclick="showSection('order')">Order Now</button>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
+                <div style="text-align: center; padding: 30px; background: rgba(220, 38, 38, 0.05); border-radius: 15px;">
+                    <h3 style="color: #dc2626; margin-bottom: 15px;">Fast Delivery</h3>
+                    <p>Same-day delivery available in Endicott Springs and surrounding areas</p>
+                </div>
+                <div style="text-align: center; padding: 30px; background: rgba(249, 115, 22, 0.05); border-radius: 15px;">
+                    <h3 style="color: #f97316; margin-bottom: 15px;">Depot Collection</h3>
+                    <p>Collect your order at our depot - Corner Station & Doris Road</p>
+                </div>
+                <div style="text-align: center; padding: 30px; background: rgba(220, 38, 38, 0.05); border-radius: 15px;">
+                    <h3 style="color: #dc2626; margin-bottom: 15px;">Flexible Payment</h3>
+                    <p>Pay online, cash on delivery, or cash on collection</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Section -->
+        <section id="order" class="section">
+            <h2>Order LP Gas</h2>
+            
+            <div class="order-form">
+                <h3 style="color: #dc2626; margin-bottom: 20px;">Select Your Gas</h3>
+                <div class="gas-options" id="gasOptions">
+                    <div class="gas-option" data-product="9kg" data-price="280" onclick="selectGas(this)">
+                        <h3>9kg LP Gas</h3>
+                        <div class="price">R280</div>
+                        <p>Perfect for small households</p>
+                    </div>
+                    <div class="gas-option" data-product="19kg" data-price="520" onclick="selectGas(this)">
+                        <h3>19kg LP Gas</h3>
+                        <div class="price">R520</div>
+                        <p>Ideal for medium families</p>
+                    </div>
+                    <div class="gas-option" data-product="48kg" data-price="1200" onclick="selectGas(this)">
+                        <h3>48kg LP Gas</h3>
+                        <div class="price">R1,200</div>
+                        <p>Great for large households</p>
+                    </div>
+                    <div class="gas-option" data-product="bulk" data-price="custom" onclick="selectGas(this)">
+                        <h3>Bulk Order</h3>
+                        <div class="price">Custom</div>
+                        <p>For commercial use</p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" min="1" value="1" onchange="calculateTotal()">
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery">Service Type</label>
+                        <select id="delivery" onchange="toggleAddressField()">
+                            <option value="delivery">Home Delivery</option>
+                            <option value="collection">Depot Collection</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="addressSection">
+                    <div class="form-group">
+                        <label for="address">Delivery Address</label>
+                        <textarea id="address" rows="3" placeholder="Enter your full delivery address"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerName">Full Name</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email">
+                </div>
+
+                <h3 style="color: #dc2626; margin: 30px 0 20px;">Payment Method</h3>
+                <div class="payment-methods" id="paymentMethods">
+                    <div class="payment-option" data-payment="online" onclick="selectPayment(this)">
+                        <h4>Online Payment</h4>
+                        <p>Pay securely online</p>
+                    </div>
+                    <div class="payment-option" data-payment="cod" onclick="selectPayment(this)">
+                        <h4>Cash on Delivery</h4>
+                        <p>Pay when we deliver</p>
+                    </div>
+                    <div class="payment-option" data-payment="collection" onclick="selectPayment(this)">
+                        <h4>Cash on Collection</h4>
+                        <p>Pay at our depot</p>
+                    </div>
+                </div>
+
+                <div class="total" id="totalAmount">
+                    Total: R0
+                </div>
+
+                <button class="cta-button" style="width: 100%; margin-top: 20px;" onclick="processOrder()">
+                    Place Order
+                </button>
+            </div>
+        </section>
+
+        <!-- Invoice Section -->
+        <section id="invoice" class="section">
+            <h2>Order Invoice</h2>
+            <div class="invoice" id="invoiceContent">
+                <!-- Invoice will be generated here -->
+            </div>
+            <button class="cta-button" onclick="printInvoice()">Print Invoice</button>
+            <button class="cta-button" onclick="showSection('order')" style="background: #6b7280; margin-left: 10px;">New Order</button>
+        </section>
+
+        <!-- Thank You Section -->
+        <section id="thankyou" class="section">
+            <div style="text-align: center; padding: 60px 40px;">
+                <h2 style="color: #22c55e; font-size: 3rem;">Thank You!</h2>
+                <p style="font-size: 1.3rem; margin: 20px 0;">Your order has been placed successfully.</p>
+                <div style="background: rgba(34, 197, 94, 0.1); padding: 30px; border-radius: 15px; margin: 30px 0;">
+                    <h3 style="color: #22c55e; margin-bottom: 15px;">What's Next?</h3>
+                    <p id="nextSteps">We'll contact you shortly to confirm your order details.</p>
+                </div>
+                <button class="cta-button" onclick="showSection('home')">Back to Home</button>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <h2>About Gaseous Solutions</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+                <div>
+                    <h3 style="color: #dc2626; margin-bottom: 20px;">Your Trusted LP Gas Partner</h3>
+                    <p style="margin-bottom: 20px;">Gaseous Solutions has been serving the Endicott Springs community with reliable LP gas supply for years. We pride ourselves on fast delivery, competitive prices, and excellent customer service.</p>
+                    <p style="margin-bottom: 20px;">Whether you need gas for your home, business, or industrial use, we have the right solution for you. Our experienced team ensures safe handling and timely delivery of all orders.</p>
+                    <ul style="color: #dc2626; margin-left: 20px;">
+                        <li>Licensed and certified gas supplier</li>
+                        <li>Same-day delivery available</li>
+                        <li>Competitive pricing</li>
+                        <li>24/7 customer support</li>
+                    </ul>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 200px; height: 200px; background: linear-gradient(45deg, #dc2626, #f97316); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 4rem; margin: 0 auto;">G</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <h2>Contact Us</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h3 style="color: #dc2626; margin-bottom: 20px;">Get in Touch</h3>
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #f97316;">Sales:</h4>
+                        <p style="font-size: 1.2rem; color: #dc2626; font-weight: bold;">074 515 0903</p>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #f97316;">Email:</h4>
+                        <p style="color: #dc2626;">gaseousgroup@gmail.com</p>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #f97316;">Address:</h4>
+                        <p style="color: #dc2626;">Corner Station & Doris Road,<br>Endicott Springs</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #f97316;">Business Hours:</h4>
+                        <p>Monday - Friday: 8:00 AM - 5:00 PM<br>
+                        Saturday: 8:00 AM - 2:00 PM<br>
+                        Sunday: Closed</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #dc2626; margin-bottom: 20px;">Send us a Message</h3>
+                    <form onsubmit="sendMessage(event)">
+                        <div class="form-group">
+                            <label for="contactName">Name</label>
+                            <input type="text" id="contactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Chatbot -->
+    <div class="chatbot" id="chatbot">
+        <div class="chatbot-header">
+            <h4>Gaseous Assistant</h4>
+            <button onclick="toggleChatbot()" style="background: none; border: none; color: white; font-size: 20px;">×</button>
+        </div>
+        <div class="chatbot-messages" id="chatMessages">
+            <div class="message bot-message">
+                Hello! I'm here to help you with your LP gas needs. How can I assist you today?
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleChatEnter(event)">
+            <button onclick="sendChatMessage()" style="background: #dc2626; color: white; border: none; padding: 10px 15px; border-radius: 20px; margin-left: 10px;">Send</button>
+        </div>
+    </div>
+
+    <button class="chatbot-toggle" onclick="toggleChatbot()">💬</button>
+
+    <script>
+        // Global variables
+        let selectedProduct = null;
+        let selectedPayment = null;
+        let orderData = {};
+
+        // Local storage simulation (in-memory storage)
+        const storage = {
+            orders: [],
+            customers: []
+        };
+
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Gas selection
+        function selectGas(element) {
+            document.querySelectorAll('.gas-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedProduct = {
+                name: element.dataset.product,
+                price: element.dataset.price
+            };
+            calculateTotal();
+        }
+
+        // Payment selection
+        function selectPayment(element) {
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedPayment = element.dataset.payment;
+        }
+
+        // Toggle address field
+        function toggleAddressField() {
+            const deliveryType = document.getElementById('delivery').value;
+            const addressSection = document.getElementById('addressSection');
+            if (deliveryType === 'collection') {
+                addressSection.style.display = 'none';
+            } else {
+                addressSection.style.display = 'block';
+            }
+        }
+
+        // Calculate total
+        function calculateTotal() {
+            if (!selectedProduct) return;
+            
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            let price = 0;
+            
+            if (selectedProduct.price !== 'custom') {
+                price = parseInt(selectedProduct.price) * quantity;
+            }
+            
+            document.getElementById('totalAmount').textContent = 
+                selectedProduct.price === 'custom' ? 'Total: Contact for Quote' : `Total: R${price.toLocaleString()}`;
+        }
+
+        // Process order
+        function processOrder() {
+            if (!selectedProduct || !selectedPayment) {
+                alert('Please select a product and payment method.');
+                return;
+            }
+
+            const customerName = document.getElementById('customerName').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const quantity = document.getElementById('quantity').value;
+            const deliveryType = document.getElementById('delivery').value;
+            const address = document.getElementById('address').value;
+
+            if (!customerName || !phone) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (deliveryType === 'delivery' && !address) {
+                alert('Please provide a delivery address.');
+                return;
+            }
+
+            // Generate order
+            orderData = {
+                id: 'GS' + Date.now(),
+                date: new Date().toLocaleDateString(),
+                customer: {
+                    name: customerName,
+                    phone: phone,
+                    email: email,
+                    address: deliveryType === 'delivery' ? address : 'Depot Collection'
+                },
+                product: selectedProduct.name,
+                quantity: quantity,
+                price: selectedProduct.price === 'custom' ? 'Quote' : selectedProduct.price,
+                total: selectedProduct.price === 'custom' ? 'Contact for Quote' : 
+                       (parseInt(selectedProduct.price) * parseInt(quantity)).toLocaleString(),
+                paymentMethod: selectedPayment,
+                deliveryType: deliveryType
+            };
+
+            // Store order
+            storage.orders.push(orderData);
+
+            // Generate invoice
+            generateInvoice();
+            showSection('invoice');
+        }
+
+        // Generate invoice
+        function generateInvoice() {
+            const invoiceContent = document.getElementById('invoiceContent');
+            invoiceContent.innerHTML = `
+                <div class="invoice-header">
+                    <div>
+                        <h3 style="color: #dc2626;">GASEOUS SOLUTIONS</h3>
+                        <p>Corner Station & Doris Road<br>Endicott Springs</p>
+                        <p>Tel: 074 515 0903</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <h4>INVOICE</h4>
+                        <p><strong>Order #:</strong> ${orderData.id}</p>
+                        <p><strong>Date:</strong> ${orderData.date}</p>
+                    </div>
+                </div>
+                
+                <div class="invoice-details">
+                    <div>
+                        <h4 style="color: #dc2626;">Bill To:</h4>
+                        <p><strong>${orderData.customer.name}</strong></p>
+                        <p>${orderData.customer.phone}</p>
+                        <p>${orderData.customer.email}</p>
+                        <p>${orderData.customer.address}</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #dc2626;">Order Details:</h4>
+                        <p><strong>Product:</strong> ${orderData.product} LP Gas</p>
+                        <p><strong>Quantity:</strong> ${orderData.quantity}</p>
+                        <p><strong>Service:</strong> ${orderData.deliveryType === 'delivery' ? 'Home Delivery' : 'Depot Collection'}</p>
+                        <p><strong>Payment:</strong> ${selectedPayment === 'online' ? 'Online Payment' : 
+                                                     selectedPayment === 'cod' ? 'Cash on Delivery' : 'Cash on Collection'}</p>
+                    </div>
+                </div>
+                
+                <div style="border-top: 2px solid #f97316; padding-top: 20px; text-align: right;">
+                    <h3 style="color: #dc2626;">Total: R${orderData.total}</h3>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4 style="color: #dc2626;">Terms & Conditions:</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>Delivery within 24 hours for in-stock items</li>
+                        <li>Cash on delivery orders require exact amount</li>
+                        <li>All gas cylinders remain property of Gaseous Solutions</li>
+                        <li>Contact us for any issues: 074 515 0903</li>
+                    </ul>
+                </div>
+            `;
+
+            // Set up thank you message
+            setTimeout(() => {
+                const nextSteps = orderData.deliveryType === 'delivery' ? 
+                    'We will deliver your order within 24 hours. Please have your payment ready if you selected cash on delivery.' : 
+                    'Your order is ready for collection at our depot. Please bring this invoice and your payment.';
+                document.getElementById('nextSteps').textContent = nextSteps;
+                showSection('thankyou');
+            }, 2000);
+        }
+
+        // Print invoice
+        function printInvoice() {
+            window.print();
+        }
+
+        // Contact form
+        function sendMessage(event) {
+            event.preventDefault();
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('message').value;
+            
+            alert(`Thank you ${name}! Your message has been sent. We'll get back to you soon.`);
+            event.target.reset();
+        }
+
+        // Chatbot functionality
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbot');
+            chatbot.classList.toggle('active');
+        }
+
+        function handleChatEnter(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addChatMessage(message, 'user');
+            input.value = '';
+
+            // Generate bot response
+            setTimeout(() => {
+                const response = generateBotResponse(message.toLowerCase());
+                addChatMessage(response, 'bot');
+            }, 1000);
+        }
+
+        function addChatMessage(message, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.textContent = message;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function generateBotResponse(message) {
+            // Simple chatbot responses
+            if (message.includes('price') || message.includes('cost')) {
+                return 'Our current prices are: 9kg - R280, 19kg - R520, 48kg - R1,200. For bulk orders, please contact us for a quote.';
+            } else if (message.includes('delivery')) {
+                return 'We offer same-day delivery in Endicott Springs and surrounding areas. Delivery is usually within 24 hours of placing your order.';
+            } else if (message.includes('payment')) {
+                return 'We accept online payments, cash on delivery, and cash on collection at our depot.';
+            } else if (message.includes('hours') || message.includes('time')) {
+                return 'Our business hours are: Monday-Friday 8AM-5PM, Saturday 8AM-2PM, Sunday closed.';
+            } else if (message.includes('location') || message.includes('address')) {
+                return 'You can find us at Corner Station & Doris Road, Endicott Springs. Call us at 074 515 0903.';
+            } else if (message.includes('order') || message.includes('buy')) {
+                return 'To place an order, click on "Order Gas" in the menu above. Select your gas size, quantity, and delivery preference.';
+            } else if (message.includes('hello') || message.includes('hi')) {
+                return 'Hello! Welcome to Gaseous Solutions. How can I help you with your LP gas needs today?';
+            } else if (message.includes('help')) {
+                return 'I can help you with pricing, delivery info, payment methods, business hours, and placing orders. What would you like to know?';
+            } else {
+                return 'I understand you need assistance. For specific questions, please call us at 074 515 0903 or email gaseousgroup@gmail.com. Our team will be happy to help!';
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default selections
+            calculateTotal();
+            
+            // Add some sample chat messages
+            setTimeout(() => {
+                addChatMessage('Need help with pricing or delivery? Just ask!', 'bot');
+            }, 3000);
+        });
+
+        // Simulate online payment processing
+        function processOnlinePayment() {
+            if (selectedPayment === 'online') {
+                // In a real implementation, this would integrate with a payment gateway
+                alert('Redirecting to secure payment gateway...');
+                // Simulate payment success
+                setTimeout(() => {
+                    alert('Payment successful! Your order has been confirmed.');
+                }, 2000);
+            }
+        }
+
+        // Add some animations
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.gas-option, .payment-option');
+            elements.forEach(element => {
+                element.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                element.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        }
+
+        // Call animation function
+        animateOnScroll();
+
+        // Add order tracking functionality
+        function trackOrder() {
+            const orderId = prompt('Enter your order ID:');
+            if (orderId) {
+                const order = storage.orders.find(o => o.id === orderId);
+                if (order) {
+                    alert(`Order Status: Confirmed\nExpected Delivery: ${order.deliveryType === 'delivery' ? 'Within 24 hours' : 'Ready for collection'}`);
+                } else {
+                    alert('Order not found. Please check your order ID.');
+                }
+            }
+        }
+
+        // Add bulk order inquiry
+        function bulkOrderInquiry() {
+            const email = 'gaseousgroup@gmail.com';
+            const subject = 'Bulk Order Inquiry';
+            const body = 'Hello, I am interested in placing a bulk order for LP gas. Please contact me with pricing and availability.';
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+
+        // Add emergency contact
+        function emergencyContact() {
+            alert('For gas emergencies, please call: 074 515 0903\n\nFor immediate safety concerns, contact emergency services: 10111');
+        }
+
+        // Add customer feedback
+        function submitFeedback() {
+            const rating = prompt('Rate your experience (1-5 stars):');
+            const comment = prompt('Any additional comments?');
+            if (rating) {
+                alert('Thank you for your feedback! We appreciate your business.');
+                // In a real app, this would be stored in the database
+            }
+        }
+
+        // Add promotional offers
+        function checkPromotions() {
+            const promos = [
+                'New Customer Special: 10% off your first order!',
+                'Bulk Discount: Order 5+ cylinders and save 15%',
+                'Loyalty Reward: Every 10th order gets free delivery!'
+            ];
+            const randomPromo = promos[Math.floor(Math.random() * promos.length)];
+            alert(`Current Promotion:\n${randomPromo}\n\nContact us to redeem: 074 515 0903`);
+        }
+
+        // Add seasonal hours notification
+        function checkSeasonalHours() {
+            const today = new Date();
+            const isWeekend = today.getDay() === 0 || today.getDay() === 6;
+            const isAfterHours = today.getHours() >= 17 || (isWeekend && today.getHours() >= 14);
+            
+            if (isAfterHours) {
+                const notice = document.createElement('div');
+                notice.style.cssText = `
+                    position: fixed; top: 0; left: 0; right: 0; 
+                    background: #dc2626; color: white; padding: 10px; 
+                    text-align: center; z-index: 9999;
+                `;
+                notice.textContent = 'We are currently closed. Orders placed now will be processed during business hours.';
+                document.body.prepend(notice);
+            }
+        }
+
+        // Check seasonal hours on load
+        checkSeasonalHours();
+
+        // Add mobile responsiveness improvements
+        function optimizeMobile() {
+            if (window.innerWidth < 768) {
+                document.querySelectorAll('.form-row').forEach(row => {
+                    row.style.gridTemplateColumns = '1fr';
+                });
+            }
+        }
+
+        window.addEventListener('resize', optimizeMobile);
+        optimizeMobile();
+    </script>
+</body>
+</html>
